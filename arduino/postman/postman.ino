@@ -4,7 +4,7 @@ SakuraAlphaI2C sakura;
 
 #define SWITCH_PIN 8
 uint8_t POST_OPEN_CHANNEL = 0;
-uint32_t DELAY_POST_OPEN = 5 * 60 * 1000;
+//uint32_t DELAY_POST_OPEN = 5 * 60 * 1000;
 
 
 
@@ -21,13 +21,20 @@ void setup() {
   Serial.println("Connected!");
 
 }
+
+uint32_t before = 0;
 void loop() {
   if (digitalRead(SWITCH_PIN) == 1) {
     uint32_t value  = 1;
+    if(before != value){
     sakura.writeChannel(POST_OPEN_CHANNEL, value);
     sakura.transmit(TRANSMIT_ONCE);
     Serial.println("Send!");
-    delay(DELAY_POST_OPEN);
+      
+    }
+    before = value;
+    delay(10000);
   }
+  before = 0;
   delay(200);
 }
